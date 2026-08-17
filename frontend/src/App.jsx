@@ -61,18 +61,21 @@ function AlertsProvider({ children }) {
   const { isAuthenticated } = useAuth();
   const [alerts, setAlerts] = useState([]);
   const [pollutionScores, setPollutionScores] = useState([]);
+  const [cameras, setCameras] = useState([]);
   const [wsConnected, setWsConnected] = useState(false);
   const wsRef = useRef(null);
   const reconnectTimer = useRef(null);
 
   const fetchInitialData = useCallback(async () => {
     try {
-      const [alertsRes, pollutionRes] = await Promise.all([
+      const [alertsRes, pollutionRes, camerasRes] = await Promise.all([
         api.get("/alerts"),
         api.get("/pollution"),
+        api.get("/cameras"),
       ]);
       setAlerts(alertsRes.data);
       setPollutionScores(pollutionRes.data);
+      setCameras(camerasRes.data);
     } catch (err) {
       console.error("Failed to fetch initial data", err);
     }
@@ -133,7 +136,7 @@ function AlertsProvider({ children }) {
   }, [isAuthenticated, fetchInitialData]);
 
   return (
-    <AlertsContext.Provider value={{ alerts, pollutionScores, wsConnected, acknowledgeAlert, refresh: fetchInitialData }}>
+    <AlertsContext.Provider value={{ alerts, pollutionScores, cameras, wsConnected, acknowledgeAlert, refresh: fetchInitialData }}>
       {children}
     </AlertsContext.Provider>
   );
