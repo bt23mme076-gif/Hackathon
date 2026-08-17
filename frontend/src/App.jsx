@@ -13,6 +13,15 @@ const AUTH_STORAGE_KEY = "drishtiai_auth";
 
 export const api = axios.create({ baseURL: API_BASE_URL });
 
+// Backend/SQLite returns naive UTC timestamps (no "Z"/offset suffix). Without
+// this, `new Date(ts)` misparses them as local time instead of UTC.
+export function parseTimestamp(ts) {
+  if (typeof ts === "string" && !/[Zz]|[+-]\d\d:\d\d$/.test(ts)) {
+    return new Date(ts + "Z");
+  }
+  return new Date(ts);
+}
+
 api.interceptors.request.use((config) => {
   const stored = localStorage.getItem(AUTH_STORAGE_KEY);
   if (stored) {

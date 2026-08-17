@@ -1,4 +1,5 @@
 import React from "react";
+import { parseTimestamp } from "../App";
 
 const ALERT_LABELS = {
   crowd_surge: "Crowd Surge",
@@ -34,7 +35,7 @@ const STATUS_STYLES = {
 };
 
 function formatTime(timestamp) {
-  return new Date(timestamp).toLocaleTimeString("en-IN", {
+  return parseTimestamp(timestamp).toLocaleTimeString("en-IN", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",

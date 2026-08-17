@@ -1,4 +1,5 @@
 import React from "react";
+import { parseTimestamp } from "../App";
 
 const LEVEL_STYLES = {
   GREEN: "bg-green-500/15 text-green-400 border-green-500/30",
@@ -13,7 +14,7 @@ const ALERT_LABELS = {
 };
 
 function timeAgo(timestamp) {
-  const diffMs = Date.now() - new Date(timestamp).getTime();
+  const diffMs = Date.now() - parseTimestamp(timestamp).getTime();
   const diffSec = Math.max(0, Math.floor(diffMs / 1000));
   if (diffSec < 60) return `${diffSec}s ago`;
   const diffMin = Math.floor(diffSec / 60);
